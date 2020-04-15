@@ -137,6 +137,16 @@ button.outline:hover {
       }
     }
 
+    ul {
+      margin: 0.5em 0;
+      list-style-position: inside;
+    }
+
+    p strong {
+      display: inline-block;
+      margin-top: 0.5em;
+    }
+
     div {
       margin: 0.7em 0;
     }
