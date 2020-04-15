@@ -109,19 +109,26 @@ export default class Jobs extends Component {
                 ></div>
                 {job.how_to_apply &&
                   (() => {
-                    const r = /<a href="(.*)">|<a href='(.*)'>/;
-                    const link = r.exec(job.how_to_apply)[1];
+                    // const r = /<a href="(.*)">|<a href='(.*)'>/;
+                    // console.log(job.how_to_apply);
+                    // const link = r.exec(job.how_to_apply)[1];
 
                     return (
-                      <a
-                        className="apply-link"
-                        href={link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Apply
-                      </a>
+                      <div
+                        dangerouslySetInnerHTML={{ __html: job.how_to_apply }}
+                      ></div>
                     );
+
+                    // return (
+                    //   <a
+                    //     className="apply-link"
+                    //     href={link}
+                    //     target="_blank"
+                    //     rel="noopener noreferrer"
+                    //   >
+                    //     Apply
+                    //   </a>
+                    // );
                   })()}
                 <small>{job.contactEmail}</small>
               </div>
