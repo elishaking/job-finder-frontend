@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import Spinner from '../Spinner';
+import React, { Component } from "react";
+import Spinner from "../components/Spinner";
 
 const JOB_CATEGORY = {
-  SAVED: 'saved',
-  ONLINE: 'online'
+  SAVED: "saved",
+  ONLINE: "online",
 };
 
 export default class Jobs extends Component {
   state = {
     jobs: [],
 
-    loading: true
+    loading: true,
   };
 
   category = JOB_CATEGORY.SAVED;
@@ -27,13 +27,13 @@ export default class Jobs extends Component {
   }
 
   fetchJobs = () => {
-    fetch('/api/v1/jobs')
+    fetch("/api/v1/jobs")
       .then((res) => res.json())
       .then((resData) => {
         if (resData.success) {
           this.setState({
             jobs: resData.data,
-            loading: false
+            loading: false,
           });
         }
       })
@@ -42,13 +42,12 @@ export default class Jobs extends Component {
 
         alert("Something went wrong, Please try again");
       });
-  }
+  };
 
   onChange = (e) => {
     const category = e.target.value;
 
-    if (this.category === category)
-      return;
+    if (this.category === category) return;
 
     this.category = category;
 
@@ -59,8 +58,9 @@ export default class Jobs extends Component {
     } else {
       this.setState({ loading: true });
 
-      const url = this.props.location.state ?
-        `/positions.json?search=${this.props.location.state.term}` : '/positions.json';
+      const url = this.props.location.state
+        ? `/positions.json?search=${this.props.location.state.term}`
+        : "/positions.json";
       console.log(url);
       fetch(url)
         .then((res) => res.json())
@@ -88,31 +88,47 @@ export default class Jobs extends Component {
         </div>
 
         <div className="jobs">
-          {
-            loading ? (<Spinner />) :
-              jobs.map((job, index) => (
-                <div key={index} className="job">
-                  <h2>
-                    {job.title}
-                    {job.type && <span> &middot; {job.type}</span>}
-                  </h2>
-                  {job.company && <h3>{job.company}</h3>}
-                  {job.budget && <small>${job.budget} &middot; {job.technologies}</small>}
-                  <div className="description"
-                    dangerouslySetInnerHTML={{ __html: job.description }}>
-                  </div>
-                  {job.how_to_apply && (() => {
+          {loading ? (
+            <Spinner />
+          ) : (
+            jobs.map((job, index) => (
+              <div key={index} className="job">
+                <h2>
+                  {job.title}
+                  {job.type && <span> &middot; {job.type}</span>}
+                </h2>
+                {job.company && <h3>{job.company}</h3>}
+                {job.budget && (
+                  <small>
+                    ${job.budget} &middot; {job.technologies}
+                  </small>
+                )}
+                <div
+                  className="description"
+                  dangerouslySetInnerHTML={{ __html: job.description }}
+                ></div>
+                {job.how_to_apply &&
+                  (() => {
                     const r = /<a href="(.*)">|<a href='(.*)'>/;
                     const link = r.exec(job.how_to_apply)[1];
 
-                    return <a className="apply-link" href={link} target="_blank" rel="noopener noreferrer">Apply</a>
+                    return (
+                      <a
+                        className="apply-link"
+                        href={link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Apply
+                      </a>
+                    );
                   })()}
-                  <small>{job.contactEmail}</small>
-                </div>
-              ))
-          }
+                <small>{job.contactEmail}</small>
+              </div>
+            ))
+          )}
         </div>
       </div>
-    )
+    );
   }
 }

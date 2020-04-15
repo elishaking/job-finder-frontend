@@ -1,56 +1,67 @@
-import React, { Component } from 'react';
-import Spinner from '../Spinner';
+import React, { Component } from "react";
+import Spinner from "../components/Spinner";
 
 export default class AddJob extends Component {
   state = {
-    title: '',
-    technologies: '',
-    budget: '',
-    description: '',
-    contactEmail: '',
+    title: "",
+    technologies: "",
+    budget: "",
+    description: "",
+    contactEmail: "",
 
     errors: {},
 
-    loading: false
+    loading: false,
   };
 
   addJob = (e) => {
     e.preventDefault();
 
-    const { title, technologies, budget, description, contactEmail, loading } = this.state;
+    const {
+      title,
+      technologies,
+      budget,
+      description,
+      contactEmail,
+      loading,
+    } = this.state;
 
     if (loading) return;
 
     const newJob = {
-      title, technologies, budget, description, contactEmail
+      title,
+      technologies,
+      budget,
+      description,
+      contactEmail,
     };
 
     this.setState({ loading: true });
 
-    fetch('/api/v1/jobs', {
-      method: 'POST',
+    fetch("/api/v1/jobs", {
+      method: "POST",
       body: JSON.stringify(newJob),
       headers: {
-        "Content-Type": "application/json"
-      }
-    }).then((res) => res.json())
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
       .then((resData) => {
         this.setState({ loading: false });
 
-        if (resData.success)
-          return this.props.history.replace('/jobs');
+        if (resData.success) return this.props.history.replace("/jobs");
 
         this.setState({ errors: resData.data });
       })
       .catch((err) => {
         this.setState({ loading: false });
-        alert('Something went wrong, please try again');
+        alert("Something went wrong, please try again");
       });
   };
 
   onChange = (e) => {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -68,7 +79,7 @@ export default class AddJob extends Component {
             name="title"
             placeholder="e.g. Full Stack Engineer"
             onChange={this.onChange}
-            className={errors.title ? 'error' : ''}
+            className={errors.title ? "error" : ""}
           />
           {errors.title && <small>{errors.title}</small>}
 
@@ -78,7 +89,7 @@ export default class AddJob extends Component {
             name="technologies"
             placeholder="e.g. PERN, Angular, MERN, Vue"
             onChange={this.onChange}
-            className={errors.technologies ? 'error' : ''}
+            className={errors.technologies ? "error" : ""}
           />
           {errors.technologies && <small>{errors.technologies}</small>}
 
@@ -88,7 +99,7 @@ export default class AddJob extends Component {
             name="budget"
             placeholder="e.g. 500000"
             onChange={this.onChange}
-            className={errors.budget ? 'error' : ''}
+            className={errors.budget ? "error" : ""}
           />
           {errors.budget && <small>{errors.budget}</small>}
 
@@ -98,7 +109,7 @@ export default class AddJob extends Component {
             name="description"
             placeholder="What is this job about?"
             onChange={this.onChange}
-            className={errors.description ? 'error' : ''}
+            className={errors.description ? "error" : ""}
           />
           {errors.description && <small>{errors.description}</small>}
 
@@ -108,11 +119,13 @@ export default class AddJob extends Component {
             name="contactEmail"
             placeholder="Your email"
             onChange={this.onChange}
-            className={errors.contactEmail ? 'error' : ''}
+            className={errors.contactEmail ? "error" : ""}
           />
           {errors.contactEmail && <small>{errors.contactEmail}</small>}
 
-          <button type="submit" disabled={loading}>Add Job</button>
+          <button type="submit" disabled={loading}>
+            Add Job
+          </button>
 
           {loading && <Spinner />}
         </form>

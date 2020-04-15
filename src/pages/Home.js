@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import Spinner from '../Spinner';
+import React, { Component } from "react";
+import Spinner from "../components/Spinner";
 
 export default class Home extends Component {
   state = {
-    search: '',
+    search: "",
 
-    loading: false
+    loading: false,
   };
 
   searchJobs = (e) => {
@@ -13,7 +13,7 @@ export default class Home extends Component {
 
     const { search, loading } = this.state;
 
-    if (loading || search === '') return;
+    if (loading || search === "") return;
 
     this.setState({ loading: true });
 
@@ -22,20 +22,20 @@ export default class Home extends Component {
       .then((resData) => {
         this.setState({ loading: false });
 
-        this.props.history.push('/jobs', {
+        this.props.history.push("/jobs", {
           term: search,
-          jobs: resData.data
+          jobs: resData.data,
         });
       })
       .catch((err) => {
         this.setState({ loading: false });
-        alert('Something went wrong');
+        alert("Something went wrong");
       });
   };
 
   onChange = (e) => {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -51,18 +51,24 @@ export default class Home extends Component {
             type="text"
             name="search"
             placeholder="e.g. react, MERN, etc"
-            onChange={this.onChange} />
+            onChange={this.onChange}
+          />
 
           <div className="actions">
-            <button disabled={loading} type="submit">Search</button>
+            <button disabled={loading} type="submit">
+              Search
+            </button>
             <button
               className="outline"
-              onClick={() => this.props.history.push('/jobs')}>All Jobs</button>
+              onClick={() => this.props.history.push("/jobs")}
+            >
+              All Jobs
+            </button>
           </div>
 
           {loading && <Spinner />}
         </form>
       </div>
-    )
+    );
   }
 }

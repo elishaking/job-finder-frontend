@@ -1,10 +1,10 @@
-import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import './App.scss';
-import Navbar from './components/Navbar';
-import Home from './components/routes/Home';
-import Jobs from './components/routes/Jobs';
-import AddJob from './components/routes/AddJob';
+import React from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import "./App.scss";
+import Navbar from "./components/Navbar";
+import Home from "./pages/Home";
+import Jobs from "./pages/Jobs";
+import AddJob from "./pages/AddJob";
 
 function App() {
   return (
