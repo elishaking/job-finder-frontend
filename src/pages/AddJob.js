@@ -41,7 +41,7 @@ export default class AddJob extends Component {
     this.setState({ loading: true });
 
     axios
-      .post("/api/v1/jobs", newJob)
+      .post("/api/v1/jobs", JSON.stringify(newJob))
       .then((res) => {
         const resData = res.data;
 
