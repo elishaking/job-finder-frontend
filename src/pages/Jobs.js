@@ -53,47 +53,6 @@ export default class Jobs extends Component {
 
         alert("Something went wrong, Please try again");
       });
-    // fetch(url)
-    // .then((res) => res.json())
-    // .then((data) => {
-    //   console.log(data);
-
-    //   this.setState({ jobs: data, loading: false });
-    // })
-    // .catch((err) => console.log(err));
-
-    // axios
-    //   .get(url)
-    //   .then((res) => {
-    //     const resData = res.data;
-    //     if (resData.success) {
-    //       this.setState({
-    //         jobs: resData.data,
-    //         loading: false,
-    //       });
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     this.setState({ loading: false });
-
-    //     alert("Something went wrong, Please try again");
-    //   });
-
-    // fetch("/api/v1/jobs")
-    // .then((res) => res.json())
-    // .then((resData) => {
-    //   if (resData.success) {
-    //     this.setState({
-    //       jobs: resData.data,
-    //       loading: false,
-    //     });
-    //   }
-    // })
-    // .catch((err) => {
-    //   this.setState({ loading: false });
-
-    //   alert("Something went wrong, Please try again");
-    // });
   };
 
   onChange = (e) => {
