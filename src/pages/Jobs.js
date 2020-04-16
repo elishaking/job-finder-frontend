@@ -29,22 +29,55 @@ export default class Jobs extends Component {
   }
 
   fetchJobs = () => {
+    let url = "/api/v1/jobs";
+
+    if (this.category === JOB_CATEGORY.ONLINE)
+      url =
+        "/api/v1/jobs/online" +
+        (this.props.location.state
+          ? `?search=${this.props.location.state.term}`
+          : "");
+
     axios
-      .get("/api/v1/jobs")
+      .get(url)
       .then((res) => {
         const resData = res.data;
-        if (resData.success) {
-          this.setState({
-            jobs: resData.data,
-            loading: false,
-          });
-        }
+
+        this.setState({
+          jobs: resData.data,
+          loading: false,
+        });
       })
       .catch((err) => {
         this.setState({ loading: false });
 
         alert("Something went wrong, Please try again");
       });
+    // fetch(url)
+    // .then((res) => res.json())
+    // .then((data) => {
+    //   console.log(data);
+
+    //   this.setState({ jobs: data, loading: false });
+    // })
+    // .catch((err) => console.log(err));
+
+    // axios
+    //   .get(url)
+    //   .then((res) => {
+    //     const resData = res.data;
+    //     if (resData.success) {
+    //       this.setState({
+    //         jobs: resData.data,
+    //         loading: false,
+    //       });
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     this.setState({ loading: false });
+
+    //     alert("Something went wrong, Please try again");
+    //   });
 
     // fetch("/api/v1/jobs")
     // .then((res) => res.json())
@@ -70,36 +103,8 @@ export default class Jobs extends Component {
 
     this.category = category;
 
-    if (category === JOB_CATEGORY.SAVED) {
-      this.setState({ loading: true });
-
-      this.fetchJobs();
-    } else {
-      this.setState({ loading: true });
-
-      const url =
-        "/api/v1/jobs/online" +
-        (this.props.location.state
-          ? `?search=${this.props.location.state.term}`
-          : "");
-
-      axios
-        .get(url)
-        .then((res) => {
-          const data = res.data.data;
-
-          this.setState({ jobs: data, loading: false });
-        })
-        .catch((err) => console.log(err));
-      // fetch(url)
-      // .then((res) => res.json())
-      // .then((data) => {
-      //   console.log(data);
-
-      //   this.setState({ jobs: data, loading: false });
-      // })
-      // .catch((err) => console.log(err));
-    }
+    this.setState({ loading: true });
+    this.fetchJobs();
   };
 
   render() {
