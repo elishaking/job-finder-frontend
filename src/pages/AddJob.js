@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import axios from "axios";
+
 import Spinner from "../components/Spinner";
 
 export default class AddJob extends Component {
@@ -38,15 +40,11 @@ export default class AddJob extends Component {
 
     this.setState({ loading: true });
 
-    fetch("/api/v1/jobs", {
-      method: "POST",
-      body: JSON.stringify(newJob),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((resData) => {
+    axios
+      .post("/api/v1/jobs", newJob)
+      .then((res) => {
+        const resData = res.data;
+
         this.setState({ loading: false });
 
         if (resData.success) return this.props.history.replace("/jobs");
@@ -57,6 +55,26 @@ export default class AddJob extends Component {
         this.setState({ loading: false });
         alert("Something went wrong, please try again");
       });
+
+    // fetch("/api/v1/jobs", {
+    //   method: "POST",
+    //   body: JSON.stringify(newJob),
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // })
+    //   .then((res) => res.json())
+    //   .then((resData) => {
+    //     this.setState({ loading: false });
+
+    //     if (resData.success) return this.props.history.replace("/jobs");
+
+    //     this.setState({ errors: resData.data });
+    //   })
+    //   .catch((err) => {
+    //     this.setState({ loading: false });
+    //     alert("Something went wrong, please try again");
+    //   });
   };
 
   onChange = (e) => {
