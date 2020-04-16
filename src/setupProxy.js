@@ -4,7 +4,10 @@ const p = (app) => {
   app.use(
     "/api",
     proxy({
-      target: "http://localhost:8000",
+      target:
+        process.env.NODE_ENV === "development"
+          ? "http://localhost:8000"
+          : "https://job-finder-bk.herokuapp.com",
       changeOrigin: true,
     })
   );
