@@ -48,12 +48,12 @@ export default class AddJob extends Component {
         this.setState({ loading: false });
 
         if (resData.success) return this.props.history.replace("/jobs");
-
-        this.setState({ errors: resData.data });
       })
       .catch((err) => {
-        this.setState({ loading: false });
-        alert("Something went wrong, please try again");
+        this.setState({ loading: false, errors: err.response.data.data });
+
+        if (err.response.data.statusCode !== 400)
+          alert("Something went wrong, please try again");
       });
 
     // fetch("/api/v1/jobs", {
