@@ -41,13 +41,16 @@ export default class AddJob extends Component {
     this.setState({ loading: true });
 
     axios
-      .post("/api/v1/jobs", JSON.stringify(newJob))
+      .post("/api/v1/jobs", newJob)
       .then((res) => {
         const resData = res.data;
 
         this.setState({ loading: false });
 
-        if (resData.success) return this.props.history.replace("/jobs");
+        if (resData.success)
+          return this.props.history.replace("/jobs", {
+            type: "saved",
+          });
       })
       .catch((err) => {
         this.setState({ loading: false, errors: err.response.data.data });

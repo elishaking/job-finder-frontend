@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import axios from "axios";
 
 import Spinner from "../components/Spinner";
 
@@ -19,22 +18,21 @@ export default class Home extends Component {
 
     this.setState({ loading: true });
 
-    axios
-      .get(`/api/v1/jobs/search?term=${search}`)
-      .then((res) => {
-        const resData = res.data;
+    this.props.history.push("/jobs", {
+      term: search,
+    });
 
-        this.setState({ loading: false });
+    // axios
+    //   .get(`/api/v1/jobs/search?term=${search}`)
+    //   .then((res) => {
+    //     const resData = res.data;
 
-        this.props.history.push("/jobs", {
-          term: search,
-          jobs: resData.data,
-        });
-      })
-      .catch((err) => {
-        this.setState({ loading: false });
-        alert("Something went wrong");
-      });
+    //     this.setState({ loading: false });
+    //   })
+    //   .catch((err) => {
+    //     this.setState({ loading: false });
+    //     alert("Something went wrong");
+    //   });
 
     // fetch(`/api/v1/jobs/search?term=${search}`)
     // .then((res) => res.json())

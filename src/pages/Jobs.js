@@ -17,13 +17,19 @@ export default class Jobs extends Component {
 
   category = JOB_CATEGORY.ONLINE;
 
-  componentDidMount() {
+  constructor(props) {
+    super(props);
+
     if (this.props.location.state) {
-      const { jobs } = this.props.location.state;
+      // const { jobs } = this.props.location.state;
+      // if (jobs.length > 0) return this.setState({ jobs, loading: false });
 
-      if (jobs.length > 0) return this.setState({ jobs, loading: false });
+      const { type } = this.props.location.state;
+      if (type && type === "saved") this.category = JOB_CATEGORY.SAVED;
     }
+  }
 
+  componentDidMount() {
     this.fetchJobs();
   }
 
@@ -34,8 +40,6 @@ export default class Jobs extends Component {
       url =
         "/api/v1/jobs/online" +
         (this.props.location.state ? `/${this.props.location.state.term}` : "");
-
-    console.log(url);
 
     axios
       .get(url)
@@ -73,7 +77,11 @@ export default class Jobs extends Component {
         <div className="heading">
           <h1>Jobs</h1>
 
-          <select name="category" onChange={this.onChange}>
+          <select
+            name="category"
+            onChange={this.onChange}
+            value={this.category}
+          >
             <option value="online">Online Jobs</option>
             <option value="saved">Saved Jobs</option>
           </select>
@@ -83,48 +91,55 @@ export default class Jobs extends Component {
           {loading ? (
             <Spinner />
           ) : (
-            jobs.map((job, index) => (
-              <div key={index} className="job">
-                <h2>
-                  {job.title}
-                  {job.type && <span> &middot; {job.type}</span>}
-                </h2>
-                {job.company && <h3>{job.company}</h3>}
-                {job.budget && (
-                  <small>
-                    ${job.budget} &middot; {job.technologies}
-                  </small>
-                )}
-                <div
-                  className="description"
-                  dangerouslySetInnerHTML={{ __html: job.description }}
-                ></div>
-                {job.how_to_apply &&
-                  (() => {
-                    // const r = /<a href="(.*)">|<a href='(.*)'>/;
-                    // console.log(job.how_to_apply);
-                    // const link = r.exec(job.how_to_apply)[1];
+            jobs.map((currentJob, index) => {
+              const job =
+                this.category === JOB_CATEGORY.SAVED
+                  ? jobs[jobs.length - index - 1]
+                  : currentJob;
 
-                    return (
-                      <div
-                        dangerouslySetInnerHTML={{ __html: job.how_to_apply }}
-                      ></div>
-                    );
+              return (
+                <div key={index} className="job">
+                  <h2>
+                    {job.title}
+                    {job.type && <span> &middot; {job.type}</span>}
+                  </h2>
+                  {job.company && <h3>{job.company}</h3>}
+                  {job.budget && (
+                    <small>
+                      ${job.budget} &middot; {job.technologies}
+                    </small>
+                  )}
+                  <div
+                    className="description"
+                    dangerouslySetInnerHTML={{ __html: job.description }}
+                  ></div>
+                  {job.how_to_apply &&
+                    (() => {
+                      // const r = /<a href="(.*)">|<a href='(.*)'>/;
+                      // console.log(job.how_to_apply);
+                      // const link = r.exec(job.how_to_apply)[1];
 
-                    // return (
-                    //   <a
-                    //     className="apply-link"
-                    //     href={link}
-                    //     target="_blank"
-                    //     rel="noopener noreferrer"
-                    //   >
-                    //     Apply
-                    //   </a>
-                    // );
-                  })()}
-                <small>{job.contactEmail}</small>
-              </div>
-            ))
+                      return (
+                        <div
+                          dangerouslySetInnerHTML={{ __html: job.how_to_apply }}
+                        ></div>
+                      );
+
+                      // return (
+                      //   <a
+                      //     className="apply-link"
+                      //     href={link}
+                      //     target="_blank"
+                      //     rel="noopener noreferrer"
+                      //   >
+                      //     Apply
+                      //   </a>
+                      // );
+                    })()}
+                  <small>{job.contactEmail}</small>
+                </div>
+              );
+            })
           )}
         </div>
       </div>
