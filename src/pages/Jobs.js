@@ -82,7 +82,9 @@ export default class Jobs extends Component {
         : "/positions.json";
 
       axios
-        .get(url)
+        .get(url, {
+          baseURL: "https://jobs.github.com",
+        })
         .then((res) => {
           const data = res.data;
           console.log(data);
