@@ -115,6 +115,8 @@ button.outline:hover {
 
 .jobs {
   margin-top: 1em;
+  word-break: break-all;
+  overflow: hidden;
 
   * {
     transition: 0.3s ease-in-out;

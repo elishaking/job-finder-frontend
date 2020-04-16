@@ -20,9 +20,8 @@ export default class Jobs extends Component {
   componentDidMount() {
     if (this.props.location.state) {
       const { jobs } = this.props.location.state;
-      this.setState({ jobs, loading: false });
 
-      return;
+      if (jobs.length > 0) return this.setState({ jobs, loading: false });
     }
 
     this.fetchJobs();
@@ -34,9 +33,9 @@ export default class Jobs extends Component {
     if (this.category === JOB_CATEGORY.ONLINE)
       url =
         "/api/v1/jobs/online" +
-        (this.props.location.state
-          ? `?search=${this.props.location.state.term}`
-          : "");
+        (this.props.location.state ? `/${this.props.location.state.term}` : "");
+
+    console.log(url);
 
     axios
       .get(url)
