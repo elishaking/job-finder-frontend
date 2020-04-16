@@ -15,7 +15,7 @@ export default class Jobs extends Component {
     loading: true,
   };
 
-  category = JOB_CATEGORY.SAVED;
+  category = JOB_CATEGORY.ONLINE;
 
   componentDidMount() {
     if (this.props.location.state) {
@@ -77,17 +77,16 @@ export default class Jobs extends Component {
     } else {
       this.setState({ loading: true });
 
-      const url = this.props.location.state
-        ? `/positions.json?search=${this.props.location.state.term}`
-        : "/positions.json";
+      const url =
+        "/api/v1/jobs/online" +
+        (this.props.location.state
+          ? `?search=${this.props.location.state.term}`
+          : "");
 
       axios
-        .get(url, {
-          baseURL: "https://jobs.github.com",
-        })
+        .get(url)
         .then((res) => {
-          const data = res.data;
-          console.log(data);
+          const data = res.data.data;
 
           this.setState({ jobs: data, loading: false });
         })
@@ -112,8 +111,8 @@ export default class Jobs extends Component {
           <h1>Jobs</h1>
 
           <select name="category" onChange={this.onChange}>
-            <option value="saved">Saved Jobs</option>
             <option value="online">Online Jobs</option>
+            <option value="saved">Saved Jobs</option>
           </select>
         </div>
 
